@@ -1,0 +1,137 @@
+<div xmlns:th="http://www.thymeleaf.org">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light" th:fragment="header">
+    <div class="container-fluid">
+      <div class="w-100">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+          <!-- Logo -->
+          <a class="navbar-brand logo" th:href="@{/}">
+            <img th:src="@{/images/logo/logo.png}" alt="Gaintcat" class="d-inline-block align-text-top">
+          </a>
+          <!-- /Logo -->
+          <!-- Navbar Icons-->
+          <ul class="list-unstyled mb-0 d-flex align-items-center order-lg-2">
+            <!-- Mobile Nav Toggler -->
+            <li class="d-lg-none">
+              <span class="nav-link cursor-pointer" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars"></i> Menu
+              </span>
+            </li>
+            <!-- /Mobile Nav Toggler -->
+            <!-- Navbar Search -->
+            <li class="d-sm-block">
+              <span class="nav-link cursor-pointer search-trigger">Search</span>
+              <div class="navbar-search d-none">
+                <div class="input-group mb-3 h-100">
+                  <span class="input-group-text px-4 bg-transparent border-0">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </span>
+                  <input type="text" class="form-control bg-transparent border-0" placeholder="Enter your search terms...">
+                  <span class="input-group-text px-4 cursor-pointer bg-transparent border-0 close-search ">
+                    <i class="fa-regular fa-circle-xmark"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="search-overlay"></div>
+            </li>
+            <!-- /Navbar Search -->
+            <!-- Navbar Login -->
+            <li class="ms-1 d-sm-block">
+              <a class="nav-link" th:href="@{/signin}">Sign In</a>
+            </li>
+            <!-- /Navbar Login -->
+            <!-- Navbar Cart Icon -->
+            <li class="ms-1 d-inline-block position-relative dropdown-cart dropdown">
+              <a href="javascript:void(0)" class="nav-link me-0 border-0 bg-transparent dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                <i class="fa-solid fa-cart-shopping"></i> (2)
+              </a>
+              <div class="cart-dropdown dropdown-menu dropdown-menu-end">
+                <!-- Cart Header -->
+                <div class="d-flex justify-content-between align-items-center border-bottom pt-3 pb-4">
+                  <h6 class="fw-bolder m-0">Cart Summary (2 items)</h6>
+                  <i class="fa-regular fa-circle-xmark fa-lg cursor-pointer btn-close-cart"></i>
+                 </div>
+                <!-- /Cart Header -->
+                <!-- Cart Items -->
+                <div>
+                  <!-- Cart Product -->
+                  <div class="row mx-0 py-4 g-0 border-bottom">
+                    <div class="col-2 position-relative">
+                      <img class="img-fluid" th:src="@{/images/products/product-1.jpg}" alt="...">
+                    </div>
+                    <div class="col-9 offset-1">
+                      <div>
+                        <h6 class="justify-content-between d-flex align-items-start mb-2">
+                          <span class="cart-product-title">Nike Air VaporMax 2021</span>
+                          <button type="button" class="btn-close" aria-label="Close"></button>
+                        </h6>
+                        <span class="d-block text-muted fw-bolder text-uppercase fs-9">Qty: <span class="cart-product-qty">1</span></span>
+                      </div>
+                      <p class="fw-bolder text-end text-muted m-0">$85.00</p>
+                    </div>
+                  </div>
+                  <!-- /Cart Product -->
+                </div>
+                <!-- /Cart Items -->
+                <!-- Cart Summary -->
+                <div>
+                  <div class="pt-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-start mb-4 mb-md-2">
+                      <p class="m-0 fw-bold fs-5">Grand Total</p>
+                      <p class="m-0 fs-5 fw-bold">$422.99</p>
+                    </div>
+                  </div>
+                  <a th:href="@{/cart}" class="btn btn-outline-dark w-100 text-center mt-4" role="button">View Cart</a>
+                  <a th:href="@{/checkout}" class="btn btn-dark w-100 text-center mt-2" role="button">Proceed To Checkout</a>
+                </div>
+                <!-- /Cart Summary -->
+              </div>
+            </li>
+            <!-- /Navbar Cart Icon -->
+          </ul>
+          <!-- /Navbar Icons -->
+          <!-- Main Navigation -->
+          <div id="navbarNavDropdown" class="collapse navbar-collapse navbar-collapse-light w-auto flex-grow-1 order-2 order-lg-1">
+            <!-- Menu -->
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/}" role="button">Home</a>
+              </li>
+              <li class="nav-item dropdown position-static">
+                <a class="nav-link dropdown-toggle" href="javascript:void(0)" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                  Product
+                </a>
+                <!-- Menswear dropdown menu-->
+                <div class="dropdown-menu dropdown-megamenu category-dropdown-menu">
+                  <div class="container-fluid py-4">
+                    <div class="row gx-9 gy-5 flex-wrap justify-content-md-center">
+                      <div class="col-12 col-md-auto"
+                        th:each="category: ${categories}"
+                        th:if="${category.childCategories.size() != 0}">
+                        <h6 class="dropdown-heading">[[${category.name}]]</h6>
+                        <ul class="list-unstyled">
+                          <li class="dropdown-list-item" th:each="childCategory: ${category.childCategories}">
+                            <a class="dropdown-item" th:href="@{/category(p=${childCategory.parent_id}, c=${childCategory.id})}">[[${childCategory.name}]]</a>
+                          </li>
+                          <li class="dropdown-list-item">
+                            <a class="dropdown-item dropdown-link-all" th:href="@{/category(p=${category.id})}">View All</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /Menswear dropdown menu -->
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./about.html" role="button">About Us</a>
+              </li>
+            </ul>
+            <!-- /Menu -->
+          </div>
+          <!-- /Main Navigation -->
+        </div>
+      </div>
+    </div>
+  </nav>
+</div>

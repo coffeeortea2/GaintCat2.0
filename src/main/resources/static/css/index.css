@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+/*-- 大圖輪播 --*/
+.swiper {
+	height: 75vh!important
+}
+.swiper-slide img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.swiper-pagination-bullet {
+	opacity: 1;
+	background: hsla(0, 0%, 100%, .9);
+}
+.swiper-pagination-bullet-active {
+	width: 20px;
+	border-radius: 10px
+}
+.swiper-button-next, .swiper-button-prev {
+	color: hsla(0, 0%, 100%, .9);
+}
+
+/*-- 簡介用 --*/
+.title-small {
+	letter-spacing: .2em;
+	text-transform: uppercase;
+	font-size: .8rem;
+	font-weight: 600;
+	display: block
+}
+
+/*-- 產品卡片 --*/
+.card-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, .5);
+	z-index: 10;
+	border-radius: .25rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	flex-direction: column;
+	opacity: 0
+}
+.page-loaded .card-overlay {
+	transition: opacity .2s ease-in
+}
+.card:hover .card-overlay {
+	opacity: 1
+}
+.btn-psuedo {
+    padding-left: 0;
+    padding-right: calc(var(--theme-btn-psuedo-width) + 1rem);
+    position: relative;
+    transition: all .2s ease-in;
+    overflow: hidden;
+    text-transform: uppercase;
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.btn-psuedo:after, .btn-psuedo:before {
+	width: var(--theme-btn-psuedo-width);
+	height: var(--theme-btn-psuedo-height);
+	background-color: currentColor;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	display: block;
+	content: ""
+}
+.btn-psuedo:before {
+	left: calc(var(--theme-btn-psuedo-width)*-1);
+	transition: all .2s ease-in
+}
+.btn-psuedo:after {
+	right: 0;
+	transition: all .2s ease-in .1s
+}
+.btn-psuedo:hover {
+	padding-left: calc(var(--theme-btn-psuedo-width) + 1rem);
+	padding-right: 0
+}
+.btn-psuedo:hover:before {
+	left: 0;
+	transition: all .2s ease-in .1s
+}
+.btn-psuedo:hover:after {
+	right: calc(var(--theme-btn-psuedo-width)*-1);
+	transition: all .2s ease-in
+}

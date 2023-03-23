@@ -1,0 +1,28 @@
+<div xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="bread">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+      <th:block th:if="${#maps.size(selectCategory)} != 0" th:with="s=${selectCategory}">
+        <li class="breadcrumb-item" th:if="${#maps.containsKey(s, 'child')}"><a th:href="@{/category(p=${s['parentId']})}" th:text="${s['parent']}"></a></li>
+        <li class="breadcrumb-item active" aria-current="page" th:unless="${#maps.containsKey(s, 'child')}">[[${s['parent']}]]</li>
+        <li th:if="${#maps.containsKey(s, 'child')}" class="breadcrumb-item active" aria-current="page">[[${s['child']}]]</li>
+      </th:block>
+      <th:block th:unless="${#maps.size(selectCategory)} != 0">
+        <li class="breadcrumb-item active" aria-current="page">All Products</li>
+      </th:block>
+    </ol>
+  </nav>
+  <h1 class="fw-bold fs-3 mb-2">
+    <th:block th:if="${#maps.size(selectCategory)} != 0" th:with="s=${selectCategory}">
+      <span th:if="${#maps.containsKey(s, 'child')}" th:text="${s['child']}"></span>
+      <span th:unless="${#maps.containsKey(s, 'child')}" th:text="${s['parent']}"></span>
+    </th:block>
+    <th:block th:unless="${#maps.size(selectCategory)} != 0">
+      <span>[[${'All Products'}]]</span>
+    </th:block>
+    (<span class="total-of-show">[[${totalRow}]]</span>)
+  </h1>
+  <p class="m-0 text-muted small">Showing 1 - <span class="number-of-show">[[${numberForShow}]]</span> of <span class="total-of-show">[[${totalRow}]]</span></p>
+</div>
+</div>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" th:href="@{/images/favicon.png}" type="image/png">
+  <title>Gaintcat | Pet Supplies Shopping Site</title>
+  <!-- Custom Google Fonts-->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Roboto:wght@300;400;700&display=auto" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href='/gaintcat/webjars/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet'/>
+  <!-- Font Awesome -->
+  <link href="/gaintcat/webjars/font-awesome/css/all.min.css" rel="stylesheet"/>
+  <!-- simplebar css -->
+  <link href="/gaintcat/webjars/simplebar/dist/simplebar.min.css" rel="stylesheet"/>
+  <!-- AOS css -->
+  <link th:href="@{/css/aos.css}" rel="stylesheet"/>
+  <!-- nouislider css -->
+  <link th:href="@{/css/nouislider.min.css}" rel="stylesheet"/>
+  <!-- template css -->
+  <link th:href="@{/css/style.css}" rel="stylesheet"/>
+  <link th:href="@{/css/products.css}" rel="stylesheet"/>
+  <!-- Fix for custom scrollbar if JS is disabled -->
+  <noscript>
+    <style>
+      /**
+       * Reinstate scrolling for non-JS clients
+       */
+      .simplebar-content-wrapper {
+        overflow: auto;
+      }
+    </style>
+  </noscript>
+  <!-- /Fix for custom scrollbar if JS is disabled -->
+</head>
+<body data-aos-start>
+  <!-- Header -->
+  <nav th:replace="~{commons/header::header}"></nav>
+  <!-- /Header -->
+  
+  <!-- Main Section-->
+  <section class="mt-0">
+    <!-- Category Top Banner -->
+    <div class="py-10 bg-img-cover bg-overlay-dark position-relative overflow-hidden bg-pos-right-center rounded-0"
+      style="background-image: url(./images/banner/banner-category-top.jpg);">
+      <div class="container-fluid position-relative z-index-20" data-aos="fade-right" data-aos-delay="300">
+        <h1 class="fw-bold display-6 mb-4 text-white">Latest Arrivals</h1>
+        <div class="col-12 col-md-6">
+          <p class="text-white mb-0 fs-5">There are many products, you can choose whatever you want.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Category Top Banner -->
+    <div class="container-fluid" data-aos="fade-in">
+      <!-- Category Toolbar -->
+      <div class="d-flex justify-content-between items-center pt-5 pb-4 flex-column flex-lg-row">
+        <!-- Bread -->
+        <div th:replace="~{commons/categoryBread::bread}"></div>
+        <!-- /Bread -->
+        <div class="d-flex justify-content-end align-items-center mt-4 mt-lg-0 flex-column flex-md-row">
+          <!-- Filter Trigger-->
+          <button class="btn bg-light p-3 me-md-3 d-flex align-items-center fs-7 lh-1 w-100 mb-2 mb-md-0 w-md-auto" 
+            type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters">
+            <i class="fa-solid fa-bars me-2"></i>Filters
+          </button>
+          <!-- / Filter Trigger-->
+          <!-- Sort Options -->
+          <select name="sort" class="form-select form-select-sm border-0 bg-light p-3 pe-5 lh-1 fs-7">
+            <option disabled>Sort By</option>
+            <option value="plh">Price Low to High</option>
+            <option value="phl">Price High to Low</option>
+          </select>
+          <!-- /Sort Options -->
+        </div>
+      </div>
+      <!-- /Category Toolbar -->
+      <!-- Products -->
+      <div id="productArea" class="row g-4" data-aos="fade-in">
+        <!-- Card Product-->
+        <div class="col-12 col-sm-6 col-lg-3" th:each="product:${products}">
+          <div class="card border border-0 rounded-0 position-relative overflow-hidden h-100">
+            <div class="card-img position-relative">
+              <div class="card-badges">
+                <span class="badge badge-card">
+                  <span th:class="${product.inventory != 0 ? 'bg-success rounded-circle f-w-2 f-h-2 d-block me-1' : 'bg-secondary rounded-circle f-w-2 f-h-2 d-block me-1'}"></span>
+                  [[${product.inventory != 0 ? "On Sale" : "Sold Out"}]]
+                </span>
+              </div>
+              <span class="position-absolute top-0 end-0 p-2 z-index-20 text-muted">
+                <i class="fa-regular fa-heart"></i>
+              </span>
+              <div class="position-relative overflow-hidden d-block bg-light">
+                <img class="w-100 img-fluid position-relative z-index-10" th:title="${product.title}" th:src="@{/images/products/}+${product.small_img}" th:alt="${product.title}">
+              </div>
+              <div class="position-absolute start-0 bottom-0 end-0 z-index-20 p-2" th:if="${product.inventory} != 0">
+                <button class="btn btn-quick-add"><i class="fa-solid fa-plus me-2"></i>Quick Add</button>
+              </div>
+            </div>
+            <div class="card-body px-0">
+              <a class="text-decoration-none link-cover link-dark" th:href="@{/product/}+${product.id}">[[${product.title}]]</a>
+              <p class="mt-2 mb-0 small" th:if="${product.special} != 0">
+                <s class="text-muted me-1">[[${'$' + product.price}]]</s>
+                <span class="text-danger fs-6">[[${'$' + #numbers.formatDecimal(product.price * product.special, 1, 'COMMA',2,'POINT')}]]</span>
+              </p>
+              <p class="mt-2 mb-0 small" th:if="${product.special} == 0">
+                <span class="text-muted fs-6">[[${'$' + product.price}]]</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- /Card Product -->
+      </div>
+      <!-- /Products -->
+      <!-- Pagination-->
+      <div class="d-flex flex-column f-w-44 mx-auto my-5 text-center">
+        <small class="text-muted">Showing <span class="number-of-show">[[${numberForShow}]]</span> of <span class="total-of-show">[[${totalRow}]]</span> products</small>
+        <div class="progress f-h-1 mt-3">
+          <div id="progressBar" class="progress-bar bg-dark" role="progressbar" th:style="${'width:'+percentage+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <button type="button" 
+          class="btn btn-outline-dark btn-sm mt-5 align-self-center py-3 px-4 border-2" id="loadMore" 
+          th:attrappend="disabled=${percentage eq '100' ? 'disabled' : ''}" data-page="1">Load More</button>
+      </div>
+      <!-- / Pagination-->
+    </div>
+  </section>
+  <!-- /Main Section-->
+  <!-- Footer -->
+  <footer th:replace="~{commons/footer::footer}"></footer>
+  <!-- /Footer -->
+  
+  <!-- Offcanvas Imports-->
+  <!-- Filters Offcanvas-->
+  <div class="offcanvas offcanvas-start filter-offcanvas" tabindex="-1" id="offcanvasFilters" aria-labelledby="offcanvasFiltersLabel">
+    <!-- Offcanvas header -->
+    <div class="offcanvas-header pb-0 d-flex align-items-center">
+      <h5 class="offcanvas-title" id="offcanvasFiltersLabel">Product Filters</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <!-- /Offcanvas header -->
+    <!-- Offcanvas Body -->
+    <div class="offcanvas-body">
+      <div class="d-flex flex-column justify-content-between w-100 h-100">
+        <!-- Filters -->
+        <div>
+          <!-- Category Filter -->
+          <div class="py-4 widget-filter border-top">
+            <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron"
+                data-bs-toggle="collapse" href="#filter-modal-category" role="button" aria-expanded="true"
+                aria-controls="filter-modal-category">
+                Category
+            </a>
+            <div id="filter-modal-category" class="collapse show">
+              <ul class="list-unstyled mt-3 mb-0 ps-0">
+                <li class="mb-1"
+                  th:each="category: ${categories}"
+                  th:if="${category.childCategories.size() != 0}">
+                  <button type="button" class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" th:data-bs-target="${'#collapse-' + category.id}" aria-expanded="true">
+                    [[${category.name}]]
+                  </button>
+                  <div th:class="${param.p != null && #strings.equals(param.p, #strings.toString(category.id)) ? 'collapse show' : 'collapse'}" th:id="${'collapse-' + category.id}">
+                    <ul class="btn-toggle-nav list-unstyled  pb-1 small">
+                      <li th:each="childCategory : ${category.childCategories}">
+                        <a th:href="@{/category(p=${category.id}, c=${childCategory.id})}" 
+                           th:class="${param.c != null && #strings.equals(param.c, #strings.toString(childCategory.id)) ? 'link-dark d-block category-link active' : 'link-dark d-block category-link'}">
+                           [[${childCategory.name}]]
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- /Category Filter -->
+          <!-- Price Filter -->
+          <div class="py-4 widget-filter widget-filter-price border-top">
+            <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron"
+                data-bs-toggle="collapse" href="#filter-modal-price" role="button" aria-expanded="true"
+                aria-controls="filter-modal-price">
+                Price
+            </a>
+            <div id="filter-modal-price" class="collapse show">
+              <div class="filter-price mt-6 me-4 ms-2"></div>
+              <div class="d-flex justify-content-between align-items-center mt-7">
+                <div class="input-group input-group-sm mb-0 me-2 border">
+                  <span class="input-group-text bg-transparent p-2 text-muted border-0">$</span>
+                  <input name="minPrice" type="number" min="00" max="100" step="1" class="filter-min form-control text-muted border-0 shadow-none">
+                </div>
+                <div class="input-group input-group-sm mb-0 ms-2 border">
+                  <span class="input-group-text bg-transparent p-2 text-muted border-0">$</span>
+                  <input name="maxPrice" type="number" min="00" max="100" step="1" class="filter-max form-control text-muted border-0 shadow-none">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /Price Filter -->
+          <!-- Brands Filter -->
+          <div class="py-4 widget-filter border-top">
+            <a class="small text-body text-decoration-none text-secondary-hover transition-all transition-all fs-6 fw-bolder d-block collapse-icon-chevron"
+                data-bs-toggle="collapse" href="#filter-modal-brands" role="button" aria-expanded="true"
+                aria-controls="filter-modal-brands">
+                Brands
+            </a>
+            <div id="filter-modal-brands" class="collapse show">
+              <div class="input-group my-3 py-1">
+                <input type="text" class="form-control py-2 shadow-none filter-search" placeholder="Search" aria-label="Search">
+                <span class="input-group-text bg-transparent rounded-0"><i class="fa-solid fa-magnifying-glass"></i></span>
+              </div>
+              <div class="simplebar-wrapper">
+                <div id="filter-brands" class="filter-options" data-pixr-simplebar>
+                  <div class="form-group form-check-custom mb-1" th:each="brand,iter : ${brands}">
+                    <input name="brand" type="checkbox" class="form-check-input" th:id="${'filter-brands-modal-' + iter.index}" th:value="${brand.brand_id}">
+                    <label class="form-check-label fw-normal text-body flex-grow-1 d-flex align-items-center" th:for="${'filter-brands-modal-' + iter.index}">
+                      [[${brand.brand_name}]] <span class="text-muted ms-1 fs-9">([[${brand.product_num}]])</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+		  </div>
+          <!-- /Brands Filter -->
+        </div>
+        <!-- /Filters -->
+        <!-- Filter Button-->
+        <div class="border-top pt-3">
+          <a href="javascript:void(0)" class="btn btn-dark mt-2 d-block hover-lift-sm hover-boxshadow filter-btn" data-bs-dismiss="offcanvas" aria-label="Close">Done</a>
+        </div>
+        <!-- /Filter Button-->
+      </div>
+    </div>
+    <!-- /Offcanvas Body -->
+  </div>
+  <!-- Offcanvas Imports-->
+  <!-- Filters Offcanvas-->
+  
+  <!-- Bootstrap.js -->
+  <script src="/gaintcat/webjars/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap.js -->
+  <script src="/gaintcat/webjars/axios/dist/axios.min.js"></script>
+  <!-- simplebar.js -->
+  <script src="/gaintcat/webjars/simplebar/dist/simplebar.min.js"></script>
+  <!-- nouislider.js -->
+  <script th:src="@{/js/nouislider.min.js}"></script>
+  <!-- AOS.js -->
+  <script th:src="@{/js/aos.js}"></script>
+  <!-- Template js File -->
+  <script th:src="@{/js/main.js}"></script>
+  <script type="text/javascript">
+    (function () {
+    	// 取得網址參數資訊
+    	const pageUrl = new URL(window.location.href);
+    	const origin = pageUrl.origin;
+    	const pathname = pageUrl.pathname;
+    	const searchParams = pageUrl.searchParams;
+    	const getParams = (params, key) => {
+    		if (params.has(key)) {
+    			return params.get(key);
+    		}
+    		return 0;
+    	}
+    	const loadProducts = (url, filterValue, loadFrom) => {
+    		axios({
+				url: url,
+				method: 'POST',
+				data: filterValue,
+				responseType: 'json'
+			})
+			.then(response => {
+				const loadDatas = response.data;
+				createNewProduct(loadDatas, loadFrom);
+			})
+			.catch(error => console.log(error));
+    	}
+    	
+    	// Filter
+    	const filterBtn = document.querySelector('.filter-btn');
+    	if (filterBtn != '') {
+    		filterBtn.addEventListener('click', even => {
+    			filterChange('filter');
+    			AOS.refresh();
+    		});
+    	}
+    	
+    	// 排序選單切換
+    	const sortSelect = document.querySelector('select[name="sort"]');
+    	if (sortSelect != '') {
+    		sortSelect.addEventListener('change', () => {
+    			filterChange('filter');
+    		});
+    	}
+    	
+    	// 載入新的產品
+    	const loadMore = document.querySelector('#loadMore');
+    	loadMore.addEventListener('click', function(event) {
+    		nextPage = parseInt(event.target.dataset.page) + 1;
+    		filterChange('nexePage', nextPage);
+    		AOS.refresh();
+    		event.target.dataset.page = nextPage;
+    	});
+    	
+    	const priceSlider = document.querySelector('.filter-price');
+    	const parentElem = priceSlider.closest('.widget-filter-price');
+    	const simpleBars = document.querySelector('#filter-brands');
+    	const filterSearchBar = document.querySelector('.filter-search');
+    	
+    	// 金額選取 range 外掛
+    	noUiSlider.create(priceSlider, {
+            start: [0, 100],
+            connect: true,
+            tooltips: [true, true],
+            range: {
+                'min': 0,
+                'max': 100
+            },
+            pips: {
+                mode: 'values',
+                values: [0, 25, 50, 75, 100],
+                density: 10
+            }
+        });
+    	var filterMinInput = parentElem ? parentElem.querySelector('.filter-min') : false;
+        var filterMaxInput = parentElem ? parentElem.querySelector('.filter-max') : false;
+        const inputs = [filterMinInput, filterMaxInput]
+
+        priceSlider.noUiSlider.on('update', function (values, handle) {
+            inputs[handle].value = values[handle];
+        });
+
+        filterMinInput.addEventListener('change', function () {
+            priceSlider.noUiSlider.set([this.value, null]);
+        });
+
+        filterMaxInput.addEventListener('change', function () {
+            priceSlider.noUiSlider.set([null, this.value]);
+        });
+	    
+	    // 側邊搜尋欄位中 Brand 啟用特效
+	    new SimpleBar(simpleBars, {
+	    	autoHide: false
+	    });
+	    
+	    // Brand 關鍵字快速搜尋
+	    if (filterSearchBar != '') {
+	    	filterSearchBar.addEventListener('keydown', function(event) {
+	    		const filterWidget = event.target.closest('.widget-filter');
+	    		const filterOptions = filterWidget ? filterWidget.querySelectorAll('.filter-options .form-group') : [];
+	    		if (this.value && filterOptions && filterWidget) {
+	    			filterOptions.forEach(option => {
+	    				if (!option.innerText.trim().toLowerCase().includes(this.value.toLowerCase().trim())) {
+	    					option.classList.add('d-none');
+	    				} else {
+	    					option.classList.remove('d-none');
+	    				}
+	    			});
+	    			return;
+	    		}
+	    		filterOptions.forEach(option => {
+		            option.classList.remove('d-none');
+		        });
+            });
+	    }
+	    
+	    function filterChange(loadFrom, page = 1) {
+	    	const pid = getParams(searchParams, 'p');
+			const cid = getParams(searchParams, 'c');
+			const filterValue = getFilterValues();
+			filterValue['page'] = (loadFrom == 'filter') ? 1 : page;
+			const url = origin + pathname + '/' + pid + '/' + cid
+			loadProducts(url, filterValue, loadFrom);
+			if (loadFrom == 'filter') {
+				document.querySelector('#loadMore').dataset.page = 1;
+			}
+	    }
+	    
+	    function getFilterValues() {
+    		const sort = document.querySelector('select[name="sort"]').value;
+    		const minPrice = document.querySelector('input[name="minPrice"]').value;
+    		const maxPrice = document.querySelector('input[name="maxPrice"]').value;
+    		const brandCheckboxes = document.querySelectorAll('input[name="brand"]:checked');
+    		const brands = [];
+    		for (let i = 0; i < brandCheckboxes.length; i++) {
+    			brands.push(brandCheckboxes[i].value);
+    		}
+    		return {'sort': sort, 'minPrice': minPrice, 'maxPrice': maxPrice, 'brands': brands}
+    	}
+	    
+	    function createNewProduct(loadDatas, loadFrom) {
+    		const productArea = document.querySelector('#productArea');
+    		const numberOfShow = document.querySelectorAll('.number-of-show');
+    		const totalOfShow = document.querySelectorAll('.total-of-show');
+    		const progressBar = document.querySelector('.progress-bar');
+    		const loadMoreBtn = document.querySelector('#loadMore');
+    		
+    		if (loadFrom == 'filter') {
+    			productArea.innerHTML = "";
+    		}
+    		
+    		const products = loadDatas.products;
+    		Object.keys(products).forEach(index => {
+    			const pid = products[index].id;
+    			const title = products[index].title;
+    			const image = products[index].small_img;
+    			const inventory = products[index].inventory;
+    			const price = products[index].price;
+    			const special = products[index].special;
+    			const specialPrice = round(price * special);
+    			
+    			const colDiv = document.createElement('div');
+    			colDiv.className = 'col-12 col-sm-6 col-lg-3';
+    			
+    			let cardDiv = document.createElement('div');
+    			cardDiv.className = 'card border-0 rounded-0 position-relative overflow-hidden h-100';
+    			
+    			let cardImgDiv = document.createElement('div');
+    			cardImgDiv.className = 'card-img position-relative';
+    			
+    			let cardBadgesDiv = document.createElement('div');
+    			cardBadgesDiv.className = 'card-badges';
+    			
+    			let badgeSpan = document.createElement('span');
+    			badgeSpan.className = 'badge badge-card';
+    			
+    			let saleSpan = document.createElement('span');
+    			let badgeSpanClassName;
+    			let badgeSpanContent;
+    			if (inventory != 0) {
+    				badgeSpanClassName = 'bg-success rounded-circle f-w-2 f-h-2 d-block me-1';
+    				badgeSpanContent = document.createTextNode("On Sale");
+    			} else {
+    				badgeSpanClassName = 'bg-secondary rounded-circle f-w-2 f-h-2 d-block me-1';
+    				badgeSpanContent = document.createTextNode("Sold Out");
+    			}
+    			saleSpan.className = badgeSpanClassName;
+    			
+    			badgeSpan.appendChild(saleSpan);
+    			badgeSpan.appendChild(badgeSpanContent);
+    			
+    			cardBadgesDiv.appendChild(badgeSpan);
+    			cardImgDiv.appendChild(cardBadgesDiv);
+    			
+    			const heartSpan = document.createElement('span');
+    			heartSpan.className = 'position-absolute top-0 end-0 p-2 z-index-20 text-muted';
+    			
+    			const hearIcon = document.createElement('i');
+    			hearIcon.className = 'fa-regular fa-heart';
+    			
+    			heartSpan.appendChild(hearIcon);
+    			cardImgDiv.appendChild(heartSpan);
+    			
+    			const imgDiv = document.createElement('div');
+    			imgDiv.className = 'position-relative overflow-hidden d-block bg-light';
+    			
+    			const img = document.createElement('img');
+    			img.src = '[[@{/images/products/}]]' + image;
+    			img.title = title;
+    			img.alt = title;
+    			img.className = 'w-100 img-fluid position-relative z-index-10';
+    			
+    			imgDiv.appendChild(img);
+    			cardImgDiv.appendChild(imgDiv);
+    			
+    			if (inventory != 0) {
+    				const quickAddDiv = document.createElement('div');
+    				quickAddDiv.className = 'position-absolute start-0 bottom-0 end-0 z-index-20 p-2';
+    				
+    				const quickButton = document.createElement('button');
+    				quickButton.type = 'button';
+    				quickButton.className = 'btn btn-quick-add';
+    				
+    				const quickButtonIcon = document.createElement('i');
+    				quickButtonIcon.className = 'fa-solid fa-plus me-2';
+    				
+    				const quickButtonText = document.createTextNode("Quick Add");
+    				
+    				quickButton.appendChild(quickButtonIcon);
+    				quickButton.appendChild(quickButtonText);
+    				quickAddDiv.appendChild(quickButton);
+    				cardImgDiv.appendChild(quickAddDiv);
+    			}
+    			
+    			const cardBodyDiv = document.createElement('div');
+    			cardBodyDiv.className = 'card-body px-0';
+    			
+    			const productLink = document.createElement('a');
+    			const productLinkText = document.createTextNode(title);
+    			productLink.href = '[[@{/product/}]]' + pid;
+    			productLink.className = 'text-decoration-none link-cover link-dark';
+    			productLink.appendChild(productLinkText);
+    			
+    			const priceShowP = document.createElement('p');
+    			priceShowP.className = 'mt-2 mb-0 small';
+    			
+    			if (special != 0) {
+    				const priceShowS = document.createElement('s');
+    				const priceShow = document.createTextNode('$' + price);
+    				priceShowS.className = 'text-muted me-1';
+    				priceShowS.appendChild(priceShow);
+    				priceShowP.appendChild(priceShowS);
+    				
+    				const specialPriceSpan = document.createElement('span');
+    				const specialPriceShow = document.createTextNode('$' + specialPrice);
+    				specialPriceSpan.className = 'text-danger fs-6';
+    				specialPriceSpan.appendChild(specialPriceShow);
+    				priceShowP.appendChild(specialPriceSpan);
+    			} else {
+    				const priceShowSpan = document.createElement('span');
+    				const priceShow = document.createTextNode('$' + price);
+    				priceShowSpan.className = 'text-muted fs-6';
+    				priceShowSpan.appendChild(priceShow);
+    				priceShowP.appendChild(priceShowSpan);
+    			}
+    			
+    			cardBodyDiv.appendChild(productLink);
+    			cardBodyDiv.appendChild(priceShowP);
+    			
+    			cardDiv.appendChild(cardImgDiv);
+    			cardDiv.appendChild(cardBodyDiv);
+    			
+    			colDiv.appendChild(cardDiv);
+    			
+    			productArea.appendChild(colDiv);
+    		});
+    		
+    		numberOfShow.forEach(element => {
+    			element.textContent = loadDatas.numberForShow
+    		});
+    		
+    		totalOfShow.forEach(element => {
+    			element.textContent = loadDatas.totalRow
+    		});
+    		
+    		const percentage = loadDatas.percentage
+    		progressBar.style.width = percentage + '%';
+    		if (percentage == 100) {
+    			loadMoreBtn.disabled = true;
+    		} else {
+    			loadMoreBtn.disabled = false;
+    		}
+    		
+    	}
+    	
+    	function round(num) {
+    	    var m = Number((Math.abs(num) * 100).toPrecision(15));
+    	    return Math.round(m) / 100 * Math.sign(num);
+    	}
+	})();
+  </script>
+</body>
+</html>

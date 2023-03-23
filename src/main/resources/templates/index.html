@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-TW" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" th:href="@{/images/favicon.png}" type="image/png">
+  <title>Gaintcat | Pet Supplies Shopping Site</title>
+  <!-- Custom Google Fonts-->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Roboto:wght@300;400;700&display=auto" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="/gaintcat/webjars/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Font Awesome -->
+  <link href="/gaintcat/webjars/font-awesome/css/all.min.css" rel="stylesheet"/>
+  <!-- Swiper.js -->
+  <link th:href="@{/css/swiper-bundle.min.css}" rel="stylesheet"/>
+  <!-- AOS css -->
+  <link th:href="@{/css/aos.css}" rel="stylesheet"/>
+  <!-- template css -->
+  <link th:href="@{/css/style.css}" rel="stylesheet"/>
+  <link th:href="@{/css/index.css}" rel="stylesheet"/>
+</head>
+<body data-aos-start>
+  <!-- Header -->
+  <nav th:replace="~{commons/header::header}"></nav>
+  <!-- /Header -->
+  <!-- Main Section-->
+  <section class="mt-0 overflow-hidden">
+    <!-- Top Banner -->
+    <div class="container-fluid overflow-hidden" data-aos="fade-in">
+      <div class="swiper mySwiper vh-75">
+        <!-- Additional required wrapper -->
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          <div class="swiper-slide position-relative h-100 w-100" th:each="banner : ${topBanners}">
+            <div class="w-100 h-100 overflow-hidden position-absolute z-index-1 top-0 start-0 end-0 bottom-0">
+              <img th:src="@{/images/banner/} + ${banner.image}" th:alt="${banner.title}" data-swiper-parallax="-100" loading="lazy">
+              <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+            </div>
+            <div class="container position-relative z-index-10 d-flex h-100 align-items-end flex-column justify-content-center">
+              <p class="title-small text-white opacity-75 mb-0" data-swiper-parallax="-100">[[${banner.title}]]</p>
+              <h2 class="display-3 tracking-wide fw-bold text-uppercase tracking-wide text-white" data-swiper-parallax="100">
+                [[${banner.detail}]]
+              </h2>
+              <div data-swiper-parallax-y="-25">
+                <a th:href="@{/category}" class="btn btn-psuedo text-white" role="button">Buy Now!</a>
+              </div>
+            </div>
+          </div>
+          <!-- /Slides -->
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination swiper-pagination-bullet-light"></div>
+      </div>     
+    </div>
+    <!-- /Top Banner -->
+    <!-- Homepage Intro-->
+    <div class="container-fluid overflow-hidden">
+      <div class="row my-lg-5 pt-5 pt-lg-0 g-8 position-relative">
+        <div class="bg-text bottom-0 start-0 end-0" data-aos="fade-up">
+          <h2 class="bg-text-title opacity-10"><span class="text-outline-dark">Gaint</span>cat</h2>
+        </div>
+        <div class="col-12 col-md-6 position-relative" data-aos="fade-right">
+          <p class="text-muted title-small">Welcome</p>
+          <h3 class="display-3 fw-bold mb-5"><span class="text-outline-dark">GaintCat</span> - Pet Supplies Shopping Site</h3>
+          <p class="lead">GaintCat works diligently to serve pet lovers who deeply care about their animals.</p>
+          <a th:href="@{/category}" class="btn btn-psuedo" role="button">Shop New Arrivals</a>
+        </div>
+        <div class="col-12 col-md-6 position-relative" data-aos="fade-left">
+          <div class="w-50 d-block mt-5 position-relative z-index-10 border border-white border-4 shadow-lg">
+            <img class="img-fluid" th:src="@{/images/banner/banner04.jpg}" alt="...">
+          </div>
+          <div class="w-60 d-block me-8 mt-n6 shadow-lg border border-white border-4 position-relative z-index-20 ms-auto">
+            <img class="img-fluid" th:src="@{/images/banner/banner05.jpg}" alt="...">
+          </div>
+          <div class="w-50 d-block me-8 mt-n7 shadow-lg border border-white border-4 position-absolute top-0 end-0 z-index-0">
+            <img class="img-fluid" th:src="@{/images/banner/banner06.jpg}" alt="HTML Bootstrap Template by Pixel Rocket">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Homepage Intro-->
+    <!-- Homepage Banners -->
+    <div class="container-fluid">
+      <div class="pt-7 py-4">
+        <div class="row g-4">
+          <div class="col-12 col-xl-6 position-relative" data-aos="fade-right">
+            <div class="position-relative z-index-10 h-100 w-100 overflow-hidden">
+              <img class="w-100 h-100 object-fit-cover" th:src="@{/images/banner/slide-page1.jpg}" alt="...">
+            </div>
+            <div class="position-absolute top-0 bottom-0 start-0 end-0 d-flex justify-content-center align-items-center z-index-20">
+              <div class="py-6 px-5 px-lg-10 text-center w-100 text-dark">
+                <h2 class="display-1 mb-3 fw-bold"><span class="text-outline-light">Flash</span> Sale</h2>
+                <p class="fs-5 fw-light d-none d-md-block">Our yearly flash sale is now on! Grab yourself a bargain from the world's leading streetwear brands.</p>
+                <a th:href="@{/category}" class="btn btn-psuedo" role="button">Shop All Sale Items</a>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-12 col-xl-6" data-aos="fade-left">
+            <div class="row g-4 justify-content-end">
+              <div class="col-12 col-md-6" th:each="category: ${categories}">
+                <div class="card position-relative overflow-hidden">
+                  <div class="position-relative z-index-10 d-block bg-light">
+                    <img class="w-100 rounded" th:src="@{/images/category/} + ${category.image}" th:alt="${category.name}">
+                  </div>
+                  <div class="card-overlay">
+                    <p class="lead fw-bolder mb-2 text-truncate w-100 px-5" th:text="${category.name}"></p>
+                    <a th:href="@{/category(p=${category.id})}" class="btn btn-psuedo text-white py-2" role="button">Shop Now</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Homepage Banners -->
+  </section>
+  <!-- /Main Section -->
+  <!-- Footer -->
+  <footer th:replace="~{commons/footer::footer}"></footer>
+  <!-- /Footer -->
+  <!-- Bootstrap.js -->
+  <script src="/gaintcat/webjars/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Swiper.js -->
+  <script th:src="@{/js/swiper-bundle.min.js}"></script>
+  <!-- AOS.js -->
+  <script th:src="@{/js/aos.js}"></script>
+  <!-- Template js File -->
+  <script th:src="@{/js/main.js}"></script>
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+    	lazy: true,
+        effect: "fade",
+        speed: 1000,
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 30,
+        parallax: true,
+        autoplay: {
+        	delay: 5000,
+            disableOnInteraction: false
+        },
+        pagination: {
+        	el: ".swiper-pagination",
+        	clickable: true
+        },
+        navigation: {
+        	nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        }
+    });
+  </script>
+</body>
+</html>

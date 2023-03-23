@@ -1,0 +1,112 @@
+@charset "UTF-8";
+.nav-link-checkout {
+	text-decoration: none;
+	color: #6b7280;
+	opacity: .75;
+	position: relative;
+	padding: 0
+}
+.nav-link-checkout:after {
+	font-family: var(--theme-font-icon);
+	content: "";
+	position: absolute;
+	right: -1.25rem;
+	top: 0
+}
+.nav-link-checkout:before {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 2px;
+	background: #111827;
+	bottom: -5px;
+	left: 0;
+	right: 0;
+	opacity: 0;
+	transition: all .3s linear
+}
+.nav-link-checkout.nav-link-last:after {
+	display: none
+}
+.nav-link-checkout.active, .nav-link-checkout:active, .nav-link-checkout:focus, .nav-link-checkout:hover {
+	color: #111827;
+	opacity: 1
+}
+.nav-link-checkout.active:before, .nav-link-checkout:active:before, .nav-link-checkout:focus:before, .nav-link-checkout:hover:before {
+	opacity: 1
+}
+  .page-loaded .nav-link-checkout {
+	transition: all .3s linear
+}
+  .aside-checkout {
+	position: relative
+}
+.aside-checkout:after {
+	background-color: rgba(var(--bs-light-rgb),var(--bs-bg-opacity))!important;
+	width: 300%;
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	bottom: 0;
+	z-index: -1
+}
+@media(max-width:991.98px) {
+	.aside-checkout:after {
+		display: none
+	}
+}
+.checkout-item-qty {
+    position: absolute;
+    border-radius: 100%;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    top: -8px;
+    right: -8px;
+    background: #111827;
+    color: #fff;
+    font-size: 74%;
+}
+
+.form-radio-custom label {
+	display: block;
+	padding-left: 1.95rem
+}
+.form-radio-custom label:before {
+	border-radius: var(--theme-form-radio-button-border-radius);
+	border: 2px solid #e5e7eb;
+	position: absolute;
+	left: 0;
+	top: 4px
+}
+.form-radio-custom label:after {
+	height: var(--theme-form-radio-button-after-size);
+	width: var(--theme-form-radio-button-after-size);
+	border-radius: var(--theme-form-radio-button-border-radius);
+	left: 5px;
+	top: 9px;
+	background: var(--theme-form-checkbox-active-color)
+}
+.form-radio-highlight input:checked+label {
+	border-color: var(--theme-form-checkbox-active-color);
+	color: var(--theme-form-checkbox-active-color)
+}
+.form-radio-highlight label {
+	display: block;
+	border: 1px solid #e5e7eb;
+	padding: 1rem;
+	border-radius: 0;
+	cursor: pointer
+}
+.form-radio-highlight label * {
+	color: inherit!important
+}
+.form-radio-highlight label:after, .form-radio-highlight label:before {
+	display: none!important
+}
