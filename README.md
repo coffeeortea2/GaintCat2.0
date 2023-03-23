@@ -1,4 +1,4 @@
-# GaintCat2.0
+# GaintCat 2.0
 網站架構不變的情況下，改以 **Spring Boot** 重新開發專題專案 [GaintCat](https://github.com/coffeeortea2/GaintCat) 
 
 * * *
