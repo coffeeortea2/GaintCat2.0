@@ -7,20 +7,20 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.gaintcat.model.category.Brand;
 import com.gaintcat.model.category.Category;
 import com.gaintcat.model.category.SearchFilter;
 import com.gaintcat.model.product.Product;
 import com.gaintcat.service.CategoryService;
 import com.gaintcat.service.SearchService;
+
 
 @Controller
 public class SearchController {
@@ -31,17 +31,25 @@ public class SearchController {
 	private CategoryService categoryService;
 	
 	@GetMapping("/category")
-	public ModelAndView getProduct(
-			@RequestParam(name = "p", required = false) Integer parentCategoryId,
-			@RequestParam(name = "c", required = false) Integer childCategoryId,
+	public String getProduct(
+			@RequestParam(name = "p", required = false, defaultValue = "0") Integer parentCategoryId,
+			@RequestParam(name = "c", required = false, defaultValue = "0") Integer childCategoryId,
 			@RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-			@RequestParam(name = "page", required = false, defaultValue = "1") String page) {
+			@RequestParam(name = "page", required = false, defaultValue = "1") String page,
+			@RequestParam(name = "k", required = false) String keyword,
+			Model model) {
+		
+		SearchFilter searchFilter = new SearchFilter();
+		searchFilter.setBrands(new Integer[] {});
+		searchFilter.setKeyword(keyword);
+		searchFilter.setPage(Integer.valueOf(page));
+		searchFilter.setSort(sort);
 		
 		// 取得當前頁面要顯示的產品
-		ArrayList<Product> products = searchService.getSearchProducts(parentCategoryId, childCategoryId, sort, Integer.valueOf(page));
+		ArrayList<Product> products = searchService.getProducts(parentCategoryId, childCategoryId, searchFilter);
 		
 		// 取得分頁資訊
-		Map<String, Integer> pageInfo = searchService.getSearchTotalRow(parentCategoryId, childCategoryId, Integer.valueOf(page));
+		Map<String, Integer> pageInfo = searchService.getPageInformation(parentCategoryId, childCategoryId, searchFilter);
 		Integer totalRow = pageInfo.get("totalRow");
 		Integer totalPage = pageInfo.get("totalPage");
 		
@@ -67,16 +75,16 @@ public class SearchController {
 		DecimalFormat df = new DecimalFormat("###.##");
 		String percentage = df.format((double) Integer.valueOf(page) / totalPage * 100);
 		
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("products", products);
-		modelAndView.addObject("totalRow", totalRow);
-		modelAndView.addObject("numberForShow", numberForShow);
-		modelAndView.addObject("percentage", percentage);
-		modelAndView.addObject("categories", categories);
-		modelAndView.addObject("selectCategory", selectCategory);
-		modelAndView.addObject("brands", brands);
-		modelAndView.setViewName("product/category");
-		return modelAndView;
+		model.addAttribute("products", products);
+		model.addAttribute("totalRow", totalRow);
+		model.addAttribute("numberForShow", numberForShow);
+		model.addAttribute("percentage", percentage);
+		model.addAttribute("categories", categories);
+		model.addAttribute("selectCategory", selectCategory);
+		model.addAttribute("brands", brands);
+		model.addAttribute("keyword", keyword);
+		
+		return "product/category";
 	}
 	
 	/**
@@ -94,10 +102,10 @@ public class SearchController {
 			@RequestBody SearchFilter searchFilter) {
 		
 		// 取得當前頁面要顯示的產品
-		ArrayList<Product> products = searchService.getFilterPorducts(parentCategoryId, childCategoryId, searchFilter);
+		ArrayList<Product> products = searchService.getProducts(parentCategoryId, childCategoryId, searchFilter);
 		
 		// 取得分頁資訊
-		Map<String, Integer> pageInfo = searchService.getFilterTotalRow(parentCategoryId, childCategoryId, searchFilter);
+		Map<String, Integer> pageInfo = searchService.getPageInformation(parentCategoryId, childCategoryId, searchFilter);
 		Integer totalRow = pageInfo.get("totalRow");
 		Integer totalPage = pageInfo.get("totalPage");
 		

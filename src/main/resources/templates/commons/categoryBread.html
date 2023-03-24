@@ -8,8 +8,11 @@
         <li class="breadcrumb-item active" aria-current="page" th:unless="${#maps.containsKey(s, 'child')}">[[${s['parent']}]]</li>
         <li th:if="${#maps.containsKey(s, 'child')}" class="breadcrumb-item active" aria-current="page">[[${s['child']}]]</li>
       </th:block>
-      <th:block th:unless="${#maps.size(selectCategory)} != 0">
+      <th:block th:if="${#maps.size(selectCategory) == 0 && keyword == null}">
         <li class="breadcrumb-item active" aria-current="page">All Products</li>
+      </th:block>
+      <th:block th:if="${#maps.size(selectCategory) == 0 && keyword != null}">
+        <li class="breadcrumb-item active" aria-current="page">Keyword: <span class="text-danger">[[${keyword}]]</span></li>
       </th:block>
     </ol>
   </nav>
@@ -18,8 +21,11 @@
       <span th:if="${#maps.containsKey(s, 'child')}" th:text="${s['child']}"></span>
       <span th:unless="${#maps.containsKey(s, 'child')}" th:text="${s['parent']}"></span>
     </th:block>
-    <th:block th:unless="${#maps.size(selectCategory)} != 0">
+    <th:block th:if="${#maps.size(selectCategory) == 0 && keyword == null}">
       <span>[[${'All Products'}]]</span>
+    </th:block>
+    <th:block th:if="${#maps.size(selectCategory) == 0 && keyword != null}">
+      <span>[[${'Keyword: ' + keyword}]]</span>
     </th:block>
     (<span class="total-of-show">[[${totalRow}]]</span>)
   </h1>

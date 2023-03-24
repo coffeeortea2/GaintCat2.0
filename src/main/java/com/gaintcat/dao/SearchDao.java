@@ -13,26 +13,6 @@ public class SearchDao {
 	@Autowired
 	private SearchMapper searchMapper;
 	
-	public Integer getSearchTotalRow(Integer pid, Integer cid) {
-		return searchMapper.getSearchTotalRow(pid, cid);
-	}
-	
-	public Integer getFilterTotalRow(Integer pid, Integer cid, Double minPrice, Double maxPrice, Integer[] brands) {
-		return searchMapper.getFilterTotalRow(pid, cid, minPrice, maxPrice, brands);
-	}
-	
-	/**
-	 * category 頁面預設搜尋結果
-	 * @param pid
-	 * @param cid
-	 * @param sort
-	 * @param page
-	 * @return
-	 */
-	public ArrayList<Product> getProductsByChildCategoryId(Integer pid, Integer cid, String sort, Integer page) {
-		return searchMapper.getProductsByChildCategoryId(pid, cid, sort, page);
-	}
-	
 	/**
 	 * 透過篩選器搜尋結果
 	 * @param pid
@@ -43,7 +23,20 @@ public class SearchDao {
 	 * @param sort
 	 * @return
 	 */
-	public ArrayList<Product> getProductsByFilter(Integer pid, Integer cid, Double minPrice, Double maxPrice, Integer[] brands, String sort, Integer page) {
-		return searchMapper.getProductsByFilter(pid, cid, minPrice, maxPrice, brands, sort, page);
+	public ArrayList<Product> getProducts(Integer pid, Integer cid, Double minPrice, Double maxPrice, Integer[] brands, String keyword, String sort, Integer page) {
+		return searchMapper.getProducts(pid, cid, minPrice, maxPrice, brands, keyword, sort, page);
+	}
+	
+	/**
+	 * 透過篩選器搜尋總筆數
+	 * @param pid
+	 * @param cid
+	 * @param minPrice
+	 * @param maxPrice
+	 * @param brands
+	 * @return
+	 */
+	public Integer getTotalRow(Integer pid, Integer cid, Double minPrice, Double maxPrice, Integer[] brands, String keyword) {
+		return searchMapper.getTotalRow(pid, cid, minPrice, maxPrice, brands, keyword);
 	}
 }

@@ -48,8 +48,19 @@
     if (searchOverlay) {
         searchOverlay.addEventListener('click', function () {
             toggleSearch();
-        })
+        });
     }
+    
+    searchInput.addEventListener('keyup', function(event) {
+		if (event.keyCode === 13) {
+			const val = this.value;
+			const pageUrl = new URL(window.location.href);
+			const origin = pageUrl.origin;
+			const searchURL = origin + '/gaintcat/category?k=' + val;
+			location.href = searchURL;
+		}
+	});
+    
     
     /**
 	 * AOS

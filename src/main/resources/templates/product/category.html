@@ -118,6 +118,7 @@
         <div class="progress f-h-1 mt-3">
           <div id="progressBar" class="progress-bar bg-dark" role="progressbar" th:style="${'width:'+percentage+'%'}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
+        <input type="hidden" name="keyword" th:value="${keyword}">
         <button type="button" 
           class="btn btn-outline-dark btn-sm mt-5 align-self-center py-3 px-4 border-2" id="loadMore" 
           th:attrappend="disabled=${percentage eq '100' ? 'disabled' : ''}" data-page="1">Load More</button>
@@ -296,7 +297,6 @@
     	loadMore.addEventListener('click', function(event) {
     		nextPage = parseInt(event.target.dataset.page) + 1;
     		filterChange('nexePage', nextPage);
-    		AOS.refresh();
     		event.target.dataset.page = nextPage;
     	});
     	
@@ -367,7 +367,7 @@
 			const cid = getParams(searchParams, 'c');
 			const filterValue = getFilterValues();
 			filterValue['page'] = (loadFrom == 'filter') ? 1 : page;
-			const url = origin + pathname + '/' + pid + '/' + cid
+			const url = origin + '/gaintcat/category/' + pid + '/' + cid
 			loadProducts(url, filterValue, loadFrom);
 			if (loadFrom == 'filter') {
 				document.querySelector('#loadMore').dataset.page = 1;
@@ -383,7 +383,8 @@
     		for (let i = 0; i < brandCheckboxes.length; i++) {
     			brands.push(brandCheckboxes[i].value);
     		}
-    		return {'sort': sort, 'minPrice': minPrice, 'maxPrice': maxPrice, 'brands': brands}
+    		const keyword = document.querySelector('input[name="keyword"]').value || null;
+    		return {'sort': sort, 'minPrice': minPrice, 'maxPrice': maxPrice, 'brands': brands, 'keyword': keyword}
     	}
 	    
 	    function createNewProduct(loadDatas, loadFrom) {
