@@ -15,7 +15,7 @@ public class MyConfig implements WebMvcConfigurer {
 		 * for product page
 		 */
 		//registry.addViewController("/category").setViewName("product/category");
-		registry.addViewController("/product/**").setViewName("product/product");
+		//registry.addViewController("/product/**").setViewName("product/product");
 
 		/**
 		 * for member page
