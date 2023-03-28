@@ -10,7 +10,7 @@
 * **MySQL 管理工具**：MySQL Workbench
 
 ## 開發框架與使用套件：
-* **後端框架**：Spring Boot (https://spring.io/)
+* **後端框架**：Spring Boot 3.0.5 (https://spring.io/)
   - 專案管理：Maven
   - 打包方式：jar
 * **後端持久化框架**：MyBatis (https://mybatis.org/mybatis-3/zh/)
