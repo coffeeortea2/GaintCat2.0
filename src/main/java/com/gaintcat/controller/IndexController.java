@@ -24,7 +24,7 @@ public class IndexController {
 	 * 首頁處理
 	 * @return
 	 */
-	@GetMapping("/")
+	@GetMapping({"/", "/index"})
 	public ModelAndView index() {
 		ArrayList<IndexTopBanner> indexTopBanners = indexService.getTopBanners();
 		ArrayList<Category> categories = categoryService.getCategories();
