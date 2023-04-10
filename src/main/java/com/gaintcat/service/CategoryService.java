@@ -62,7 +62,7 @@ public class CategoryService {
 			categoryMap.put("parent", category.getName());
 			categoryMap.put("parentId", category.getId());
 			
-			if (Optional.ofNullable(cid).orElse(0) != 0) {
+			if (cid != 0) {
 				ChildCategory childCategory = category.getChildCategories().stream()
 						.filter(c -> c.getId() == cid)
 						.findAny()
