@@ -56,8 +56,6 @@ public class CategoryService {
 		
 		Map<String, Object> categoryMap = new HashMap<>();
 		
-		System.out.println("???????" + cid);
-		
 		if (category != null) {
 			categoryMap.put("parent", category.getName());
 			categoryMap.put("parentId", category.getId());
