@@ -3,6 +3,7 @@ package com.gaintcat.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,11 +56,13 @@ public class CategoryService {
 		
 		Map<String, Object> categoryMap = new HashMap<>();
 		
+		System.out.println("???????" + cid);
+		
 		if (category != null) {
 			categoryMap.put("parent", category.getName());
 			categoryMap.put("parentId", category.getId());
 			
-			if (cid != 0) {
+			if (Optional.ofNullable(cid).orElse(0) != 0) {
 				ChildCategory childCategory = category.getChildCategories().stream()
 						.filter(c -> c.getId() == cid)
 						.findAny()
